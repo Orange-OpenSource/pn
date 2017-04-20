@@ -73,7 +73,7 @@ Options:
                  "int"    international formating
                  "teluri" tel URI (e.g. "tel:+123456789")
 -l LENINECY      leniency when finding potential phone numbers in text segments,
-                 one of "possible", "valid", "strict" or "exact"
+                 one of "possible", "valid" (default), "strict" or "exact"
    (see https://javadoc.io/doc/com.googlecode.libphonenumber/libphonenumber/8.4.1)
 
 Returns:
