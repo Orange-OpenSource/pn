@@ -58,10 +58,6 @@ $ pn find -c FR "rappelle-moi au 01 23 4 56789 ou au 06 78 90 12 34 après 20h00
 +33678901234
 ```
 
-## More to come
-
-Stay tuned
-
 ### Usage
 
 ```
@@ -86,6 +82,10 @@ On success: the formatted numbers on stdout (one per line) and a success return 
 On failure: an error message on stderr and a failure return code
 
 ```
+
+## More to come
+
+Stay tuned
 
 # Building
 
