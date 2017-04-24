@@ -5,6 +5,9 @@
 #include <phonenumbers/phonenumbermatcher.h>
 #include <phonenumbers/phonenumberutil.h>
 #include <phonenumbers/phonenumbermatch.h>
+#include <phonenumbers/shortnumberinfo.h>
+#include <phonenumbers/phonemetadata.pb.h>
+#include <phonenumbers/geocoding/phonenumber_offline_geocoder.h>
 
 using namespace std;
 using namespace i18n::phonenumbers;
@@ -131,6 +134,93 @@ int find(int argc, char *argv[])
 	return 0;
 }
 
+const char *num_type_descr(PhoneNumberUtil::PhoneNumberType pnt)
+{
+	switch (pnt) {
+	case PhoneNumberUtil::FIXED_LINE:
+		return "fixed line";
+		break;
+	case PhoneNumberUtil::MOBILE:
+		return "mobile";
+		break;
+	case PhoneNumberUtil::FIXED_LINE_OR_MOBILE:
+		return "fixed line or mobile";
+		break;
+	case PhoneNumberUtil::TOLL_FREE:
+		return "toll free";
+		break;
+	case PhoneNumberUtil::PREMIUM_RATE:
+		return "premium rate";
+		break;
+	case PhoneNumberUtil::SHARED_COST:
+		return "shared cost";
+		break;
+	case PhoneNumberUtil::VOIP:
+		return "voip";
+		break;
+	case PhoneNumberUtil::PERSONAL_NUMBER:
+		return "personal number";
+		break;
+	case PhoneNumberUtil::PAGER:
+		return "pager";
+		break;
+	case PhoneNumberUtil::UAN:
+		return "uan";
+		break;
+	case PhoneNumberUtil::VOICEMAIL:
+		return "voicemail";
+		break;
+	case PhoneNumberUtil::UNKNOWN:
+	default:
+		return "unknown";
+		break;
+	}
+}
+
+int info(int argc, char *argv[])
+{
+	int c;
+	while ((c = getopt(argc, argv, "c:")) != -1) {
+		switch((char)c) {
+		case 'c':
+			country_code = optarg;
+			break;
+		default:
+			return 1;
+			break;
+		}
+	}
+
+	if (optind == argc) {
+		cerr << "missing the phone number as argument" << endl;
+		return 1;
+	}
+
+	PhoneNumberUtil *pnu = PhoneNumberUtil::GetInstance();
+	PhoneNumber pn;
+	const string raw_num = argv[optind];
+
+	if (pnu->Parse(raw_num, country_code, &pn) != PhoneNumberUtil::NO_PARSING_ERROR) {
+		cerr << "could not parse number: " << argv[optind] << endl;
+		return 1;
+	}
+
+	const ShortNumberInfo sni;
+	const PhoneNumberOfflineGeocoder pnog;
+	const Locale loc("C");
+	string s;
+
+	pnu->GetRegionCodeForCountryCode(pn.country_code(), &s);
+	cout << "country code: " << pn.country_code() << " (" << s << ")" << endl;
+	cout << "number type: " << num_type_descr(pnu->GetNumberType(pn)) << endl;
+	cout << "location: " << pnog.GetDescriptionForNumber(pn, loc) << endl;
+	cout << "possible short number: " << (sni.IsPossibleShortNumber(pn) ? "true" : "false") << endl;
+	cout << "valid short number: " << (sni.IsValidShortNumber(pn) ? "true" : "false") << endl;
+	cout << "emergency number: "<< (sni.IsEmergencyNumber(raw_num, country_code) ? "true" : "false") << endl;
+
+	return 0;
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 3) {
@@ -142,6 +232,10 @@ int main(int argc, char *argv[])
 		return format(argc - 1, &argv[1]);
 	} else if (strcmp(argv[1], "find") == 0) {
 		return find(argc - 1, &argv[1]);
+	} else if (strcmp(argv[1], "info") == 0) {
+		return info(argc - 1, &argv[1]);
+	} else if (strcmp(argv[1], "-h") == 0) {
+		//usage();
 	} else {
 		cerr << "invalid command: " << argv[1] << endl;
 		return 1;

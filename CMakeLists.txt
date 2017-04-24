@@ -6,9 +6,18 @@ find_library(
 	phonenumber
 )
 
+find_library(
+	LIBGEOCODING
+	geocoding
+)
+
 if(${LIBPHONENUMBER-NOTFOUND})
 	message(FATAL_ERROR "could not find prerequisite: libphonenumber")
 endif(${LIBPHONENUMBER-NOTFOUND})
+
+if(${LIBGEOCODING-NOTFOUND})
+	message(FATAL_ERROR "could not find prerequisite: libgeocoding")
+endif(${LIBGEOCODING-NOTFOUND})
 
 add_executable(
 	pn
@@ -17,7 +26,9 @@ add_executable(
 
 target_link_libraries(
 	pn
+	icuuc
 	${LIBPHONENUMBER}
+	${LIBGEOCODING}
 )
 
 install(

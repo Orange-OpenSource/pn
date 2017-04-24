@@ -83,9 +83,45 @@ On failure: an error message on stderr and a failure return code
 
 ```
 
-## More to come
+## `info`
 
-Stay tuned
+### Example
+
+```
+$ pn info "+33 2 96 48 46 98"
+country code: 33 (FR)
+number type: fixed line
+location: Lannion
+possible short number: false
+valid short number: false
+emergency number: false
+
+$ pn info -c FR 112
+country code: 33 (FR)
+number type: unknown
+location: 
+possible short number: true
+valid short number: true
+emergency number: true
+```
+
+### Usage
+
+
+```
+pn info [options] NUMBER
+
+Options:
+
+-c COUNTRY_CODE  assumes NUMBER is a number of the given country
+   (by default, pn assumes NUMBER is in an international format)
+
+Returns:
+
+On success: informations about the given number on stdout and a success return code
+On failure: an error message on stderr and a failure return code
+
+```
 
 # Building
 
