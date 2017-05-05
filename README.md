@@ -1,8 +1,42 @@
 # `pn` -- a libphonenumber command-line wrapper
 
 `pn` is a tool that allows the command line user/programmer to operate on phone
-numbers (currently reformat them, or extract numbers from a text snippet),
-using [libphonenumber](https://github.com/googlei18n/libphonenumber).
+numbers (get validity information, reformat them, or extract numbers from a
+text snippet), using
+[libphonenumber](https://github.com/googlei18n/libphonenumber).
+
+# How to build `pn`?
+
+## Prerequisites
+
+For **Debian 9** (Stretch), **Ubuntu 16.10**, **Ubuntu 17.04**:
+
+```
+$ sudo apt install cmake build-essential libphonenumber-dev libicu-dev
+```
+
+For **Ubuntu 16.04**:
+
+```
+$ sudo apt install cmake build-essential libphonenumber-dev libgeocoding-dev libicu-dev
+```
+
+Other: to build `pn` you need a C++ compiler, [CMake](https://cmake.org/),
+Google's [libphonenumber](https://github.com/googlei18n/libphonenumber)
+(including the geocoding part) binaries and dev headers,
+[ICU](http://site.icu-project.org/) binaries and dev headers.
+
+## Build
+```
+$ cd build
+$ cmake ..
+$ make
+```
+## Install
+
+```
+$ sudo make install
+```
 
 # Features
 
@@ -123,13 +157,3 @@ On failure: an error message on stderr and a failure return code
 
 ```
 
-# Building
-
-prerequisites: `cmake`, `libphonenumber` lib and dev headers
-
-
-```
-$ cd build
-$ cmake ..
-$ make
-```
