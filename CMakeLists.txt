@@ -35,3 +35,8 @@ install(
 	TARGETS pn
 	RUNTIME DESTINATION bin
 )
+
+install(
+	FILES pn.1
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/man/man1
+)
