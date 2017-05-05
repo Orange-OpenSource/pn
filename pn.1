@@ -13,6 +13,11 @@ pn - a command-line tool for phone number manipulation
 .SH COMMANDS
 
 .TP
+.B valid
+Tests whether the phone number given as \fIINPUT\fR is a valid number or short
+number. Returns \fB0\fR (SUCCESS) if the number is valid, \fB1\fR (ERROR)
+otherwise. Valid options: \fB-c\fR, \fB-v\fR (verbose, default off).
+.TP
 .B info
 Displays informations about the phone number given as \fIINPUT\fR. Valid
 option: \fB-c\fR.

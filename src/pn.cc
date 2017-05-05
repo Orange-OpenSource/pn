@@ -240,6 +240,82 @@ int info(int argc, char *argv[])
 	return 0;
 }
 
+int valid(int argc, char *argv[])
+{
+	int c, ret;
+	bool verbose = false;
+	string msg;
+	while ((c = getopt(argc, argv, "c:v")) != -1) {
+		switch((char)c) {
+		case 'c':
+			country_code = optarg;
+			break;
+		case 'v':
+			verbose = true;
+			break;
+		default:
+			return 1;
+			break;
+		}
+	}
+
+	if (optind == argc) {
+		cerr << "missing the phone number as argument" << endl;
+		return 1;
+	}
+
+	PhoneNumberUtil *pnu = PhoneNumberUtil::GetInstance();
+	PhoneNumber pn;
+	const string raw_num = argv[optind];
+
+	if (pnu->Parse(raw_num, country_code, &pn) != PhoneNumberUtil::NO_PARSING_ERROR) {
+		switch (pnu->Parse(raw_num, country_code, &pn)) {
+		case PhoneNumberUtil::INVALID_COUNTRY_CODE_ERROR:
+			msg = "invalid country code";
+			break;
+		case PhoneNumberUtil::NOT_A_NUMBER:
+			msg = "not a number";
+			break;
+		case PhoneNumberUtil::TOO_SHORT_AFTER_IDD:
+			msg = "too short after international dialing prefix";
+			break;
+		case PhoneNumberUtil::TOO_SHORT_NSN:
+			msg = "too short";
+			break;
+		case PhoneNumberUtil::TOO_LONG_NSN:
+			msg = "too long";
+			break;
+		default:
+			msg = "unknown error";
+			break;
+		}
+		if (verbose) {
+			cout << msg << endl;
+		}
+		return 1;
+	}
+
+	const ShortNumberInfo sni;
+
+	if (!pnu->IsValidNumber(pn)) {
+		if (sni.IsValidShortNumber(pn)) {
+			if (verbose) {
+				cout << "valid short number" << endl;
+			}
+			return 0;
+		}
+		if (verbose) {
+			cout << "invalid number" << endl;
+		}
+		return 1;
+	}
+
+	if (verbose) {
+		cout << "valid number" << endl;
+	}
+	return 0;
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 3) {
@@ -253,6 +329,8 @@ int main(int argc, char *argv[])
 		return find(argc - 1, &argv[1]);
 	} else if (strcmp(argv[1], "info") == 0) {
 		return info(argc - 1, &argv[1]);
+	} else if (strcmp(argv[1], "valid") == 0) {
+		return valid(argc - 1, &argv[1]);
 	} else if (strcmp(argv[1], "-h") == 0) {
 		//usage();
 	} else {

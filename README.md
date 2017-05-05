@@ -44,7 +44,20 @@ $ sudo make install
 
 See the man page for more details.
 
+Check the validity of a number:
 
+```
+$ pn valid -v +33123456789
+valid number
+(SUCCESS)
+$ pn valid -v '(202) 555-0110'
+invalid country code
+(ERROR)
+$ pn valid -v -c US '(202) 555-0110'
+valid number
+(SUCCESS)
+
+```
 
 Re-format a phone number:
 
