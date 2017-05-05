@@ -11,6 +11,11 @@ find_library(
 	geocoding
 )
 
+find_library(
+	LIBICUUC
+	icuuc
+)
+
 if(${LIBPHONENUMBER-NOTFOUND})
 	message(FATAL_ERROR "could not find prerequisite: libphonenumber")
 endif(${LIBPHONENUMBER-NOTFOUND})
@@ -19,6 +24,10 @@ if(${LIBGEOCODING-NOTFOUND})
 	message(FATAL_ERROR "could not find prerequisite: libgeocoding")
 endif(${LIBGEOCODING-NOTFOUND})
 
+if(${LIBICUUC-NOTFOUND})
+	message(FATAL_ERROR "could not find prerequisite: libicuuc")
+endif(${LIBICUUC-NOTFOUND})
+
 add_executable(
 	pn
 	src/pn.cc
@@ -26,7 +35,7 @@ add_executable(
 
 target_link_libraries(
 	pn
-	icuuc
+	${LIBICUUC}
 	${LIBPHONENUMBER}
 	${LIBGEOCODING}
 )
