@@ -18,32 +18,57 @@ Displays informations about the phone number given as \fIINPUT\fR. Valid
 option: \fB-c\fR.
 .TP
 .B format
-Formats a telephone number to the specified standard (E164 by default), result
-on stdout. Valid options: \fB-c\fR, \fB-f\fR.
+Formats a telephone number given as \fIINPUT\fR to the specified standard
+(E164 by default), result on stdout. Valid options: \fB-c\fR, \fB-f\fR.
 .TP
 .B find
-Finds phone number in some text, result on stdout (one line per number found).
-Valid options: \fB-c\fR, \fB-f\fR, \fB-l\fR.
+Finds phone number in some text given as \fIINPUT\fR, result on stdout (one
+line per number found).  Valid options: \fB-c\fR, \fB-f\fR, \fB-l\fR.
 
 .SH OPTIONS
 
 .TP
 \fB-c\fR \fICOUNTRY\-CODE\fR
-If set, the phone number given in \fIINPUT\fR will be considered as belonging
-to the country specified by the 2 uppercase letters \fICOUNTRY\-CODE\fR (e.g.
-"FR", "US", ...). If this option is not set, \fBpn\fR will look for numbers in
-the international format.
+If set, the phone number(s) given in \fIINPUT\fR will be considered as being
+dialed from the country specified by the 2 uppercase letters
+\fICOUNTRY\-CODE\fR (e.g.  "FR", "US", ...). If this option is not set,
+\fBpn\fR will look for numbers in the international format.
 .TP
 \fB-f\fR \fIFORMAT\fR
 Sets the phone number output format. \fIFORMAT\fR must be one of \fBe164\fR,
 \fBint\fR (international), \fBnat\fR (national), or \fBteluri\fR (RFC3966 tel
 URI). The default value is \fBe164\fR.
 .TP
-\fB-l\fR \fILENINECY\fR
-Sets the phone number search leninency in \fIINPUT\fR. \fILENINECY\fR must be
-one of \fBpossible\fR, \fBvalid\fR, \fBstrict\fR, or \fBexact\fR. The default
-value is \fBvalid\fR.
-See https://javadoc.io/doc/com.googlecode.libphonenumber/libphonenumber/8.4.1
+\fB-l\fR \fILENIENCY\fR
+Sets the phone number search leniency in \fIINPUT\fR. \fILENIENCY\fR must be
+one of:
+.RS
+.TP
+.B possible
+Phone numbers accepted are possible, but not necessarily valid.
+.TP
+.B valid
+(default value) Phone numbers accepted are possible and valid. Numbers written
+in national format must have their national-prefix present if it is usually
+written for a number of this type.
+.TP
+.B strict
+Phone numbers accepted are valid and are grouped in a possible way for this
+locale. For example, a US number written as "65 02 53 00 00" and "650253 0000"
+are not accepted at this leniency level, whereas "650 253 0000", "650 2530000"
+or "6502530000" are. Numbers with more than one '/' symbol in the national
+significant number are also dropped at this level.
+.TP
+.B exact
+Phone numbers accepted are valid and are grouped in the same way that we would
+have formatted it, or as a single block. For example, a US number written as
+"650 2530000" is not accepted at this leniency level, whereas "650 253 0000" or
+"6502530000" are. Numbers with more than one '/' symbol are also dropped at
+this level.
+
+(see https://javadoc.io/doc/com.googlecode.libphonenumber/libphonenumber/8.4.1
+for more details)
+.RE
 
 .SH RETURN STATUS
 \fBpn\fR returns 0 on successful operations, 1 if an error occurred (option
