@@ -21,10 +21,12 @@ For **Ubuntu 16.04**:
 $ sudo apt install cmake build-essential libphonenumber-dev libgeocoding-dev libicu-dev
 ```
 
-Other: to build `pn` you need a C++ compiler, [CMake](https://cmake.org/),
-Google's [libphonenumber](https://github.com/googlei18n/libphonenumber)
-(including the geocoding part) binaries and dev headers,
-[ICU](http://site.icu-project.org/) binaries and dev headers.
+Other platforms:
+
+To build `pn` you need a C++ compiler, [CMake](https://cmake.org/), Google's
+[libphonenumber](https://github.com/googlei18n/libphonenumber) (including the
+geocoding part) binaries and dev headers, [ICU](http://site.icu-project.org/)
+binaries and dev headers.
 
 ## Build
 ```
@@ -40,10 +42,11 @@ $ sudo make install
 
 # Features
 
-## `format`
+See the man page for more details.
 
-### Example
 
+
+Re-format a phone number:
 
 ```
 $ pn format "+1 20 2 555    01 10"
@@ -56,33 +59,7 @@ $ pn format -f int "+12025550110"
 +1 202-555-0110
 ```
 
-### Usage
-
-
-```
-pn format [options] NUMBER
-
-Options:
-
--c COUNTRY_CODE  assumes NUMBER is a number of the given country
-   (by default, pn assumes NUMBER is in an international format)
--f FORMAT        output format, one of:
-                 "e164"   E164 (default)
-                 "nat"    national formating
-                 "int"    international formating
-                 "teluri" tel URI (e.g. "tel:+123456789")
-
-Returns:
-
-On success: the formatted number on stdout and a success return code
-On failure: an error message on stderr and a failure return code
-
-```
-
-## `find`
-
-### Example
-
+Find valid numbers inside a free text input:
 
 ```
 $ pn find -f nat "2017/04/20: You have 2 messsages, call +1-202-555-0110 to listen to them."
@@ -92,34 +69,7 @@ $ pn find -c FR "rappelle-moi au 01 23 4 56789 ou au 06 78 90 12 34 après 20h00
 +33678901234
 ```
 
-### Usage
-
-```
-pn find [options] TEXT
-
-Options:
-
--c COUNTRY_CODE  assumes TEXT contains numbers of the given country
-   (by default, pn assumes numbers are in an international format)
--f FORMAT        output format, one of:
-                 "e164"   E164 (default)
-                 "nat"    national formating
-                 "int"    international formating
-                 "teluri" tel URI (e.g. "tel:+123456789")
--l LENINECY      leniency when finding potential phone numbers in text segments,
-                 one of "possible", "valid" (default), "strict" or "exact"
-   (see https://javadoc.io/doc/com.googlecode.libphonenumber/libphonenumber/8.4.1)
-
-Returns:
-
-On success: the formatted numbers on stdout (one per line) and a success return code
-On failure: an error message on stderr and a failure return code
-
-```
-
-## `info`
-
-### Example
+Get some informations about a number:
 
 ```
 $ pn info "+33 2 96 48 46 98"
@@ -137,23 +87,5 @@ location:
 possible short number: true
 valid short number: true
 emergency number: true
-```
-
-### Usage
-
-
-```
-pn info [options] NUMBER
-
-Options:
-
--c COUNTRY_CODE  assumes NUMBER is a number of the given country
-   (by default, pn assumes NUMBER is in an international format)
-
-Returns:
-
-On success: informations about the given number on stdout and a success return code
-On failure: an error message on stderr and a failure return code
-
 ```
 
