@@ -83,6 +83,8 @@ int pn_valid(char *num, size_t num_len);
 
 struct str_list *pn_find(char *text, size_t text_len);
 
+int pn_info(char *num, size_t num_len, struct pn_info* res);
+
 int set_format(char *str, size_t len);
 
 int set_leniency(char *str, size_t len);
