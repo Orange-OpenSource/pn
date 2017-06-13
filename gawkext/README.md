@@ -100,10 +100,18 @@ Gets informations about the given **NUMBER**, and returns them in the given
 	- **9**: universal access number or company number
 	- **10**: voicemail access number
 	- **11**: unknown
+- **"location"** (string): the approximate location of the given number (using
+  offline geocoding)
+- **"possible\_short\_number"** (number): 1 if the number is a possible short
+  number, 0 otherwise
+- **"valid\_short\_number"** (number): 1 if the number is a valid short number,
+  0 otherwise
+- **"emergency\_number"** (number): 1 if the number is an emergency number, 0
+  otherwise
 
 ### `pn_find(TEXT, ARRAY)`
 
-Finds phone number in the given **TEXT**, and returns the numbers that were
+Finds phone numbers in the given **TEXT**, and returns the numbers that were
 found as **keys** of the given **ARRAY**.
 
 ## Building
