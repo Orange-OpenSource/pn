@@ -85,4 +85,17 @@ if( HAVE_GAWK_H )
 		${LIBPHONENUMBER}
 		${LIBGEOCODING}
 	)
+
+	execute_process(
+		COMMAND
+			gawk "BEGIN {print ENVIRON[\"AWKLIBPATH\"]}"
+		OUTPUT_VARIABLE
+			AWKLIBPATH
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+
+	install(
+		TARGETS gawkpn
+		DESTINATION ${AWKLIBPATH}
+	)
 endif( HAVE_GAWK_H )
