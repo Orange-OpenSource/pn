@@ -61,7 +61,7 @@ extern "C" int set_format(char *str, size_t len)
 	return 1;
 }
 
-extern "C" int set_leninency(char *str, size_t len)
+extern "C" int set_leniency(char *str, size_t len)
 {
 	if (strncmp(str, "possible", len) == 0) {
 		matcher_leniency = PhoneNumberMatcher::POSSIBLE;

@@ -52,7 +52,7 @@ bool parse_format(char *s, enum PhoneNumberUtil::PhoneNumberFormat *f)
 	return true;
 }
 
-bool parse_leninency(char *s, enum PhoneNumberMatcher::Leniency *l)
+bool parse_leniency(char *s, enum PhoneNumberMatcher::Leniency *l)
 {
 	if (strcmp(s, "possible") == 0) {
 		*l = PhoneNumberMatcher::POSSIBLE;
@@ -122,7 +122,7 @@ int find(int argc, char *argv[])
 			}
 			break;
 		case 'l':
-			if (!parse_leninency(optarg, &matcher_leniency)) {
+			if (!parse_leniency(optarg, &matcher_leniency)) {
 				cerr << "invalid leninency: " << optarg << endl;
 				return 1;
 			}
