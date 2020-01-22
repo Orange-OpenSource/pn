@@ -6,16 +6,28 @@ include(CheckIncludeFiles)
 find_library(
 	LIBPHONENUMBER
 	phonenumber
+	PATHS
+	/usr/local/lib
 )
 
 find_library(
 	LIBGEOCODING
 	geocoding
+	PATHS
+	/usr/local/lib
 )
 
 find_library(
 	LIBICUUC
 	icuuc
+	PATHS
+	/usr/local/lib
+)
+
+include_directories(
+	BEFORE
+	SYSTEM
+	/usr/local/include
 )
 
 check_include_files(
