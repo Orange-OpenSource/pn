@@ -117,11 +117,10 @@ found as **keys** of the given **ARRAY**.
 ## Building
 
 If GNU Awk is installed on your system and its extension development header was
-found (`gawkapi.h`), building the `pn` project in `../build` will already
-produce the GNU Awk extension library as **gawkpn.so** (see README.md in the
-parent directory for prerequisites and build instructions).
+found (`gawkapi.h`), building the `pn` project in `../build` will compile the GNU Awk extension library as **gawkpn.so** (see README.md in the
+parent directory for prerequisites and build instructions). The `make install` rule will try to locate your awk extensions path, and will install this extension in it automatically.
 
-Once the extension is built, either copy it in your system's GNU Awk extensions
+If you want to install it manually, either copy it in your system's GNU Awk extensions
 folder (e.g.: `/usr/lib/x86_64-linux-gnu/gawk/` on an amd64 Debian 8 install),
 or set the **AWKLIBPATH** environment variable to include the folder where
 **gawkpn.so** lies before running your awk program:

@@ -1,44 +1,11 @@
-# `pn` -- a libphonenumber command-line wrapper
+# `pn` -- a libphonenumber command-line wrapper, and GNU AWK extension
 
-`pn` is a tool that allows the command line user/programmer to operate on phone
+`pn` is a tool that allows command line user/programmers to operate on phone
 numbers (get validity information, reformat them, or extract numbers from a
 text snippet), using
 [libphonenumber](https://github.com/googlei18n/libphonenumber).
 
-# How to build `pn`?
-
-## Prerequisites
-
-For **Debian 9** (Stretch), **Ubuntu 16.10**, **Ubuntu 17.04**:
-
-```
-$ sudo apt install cmake build-essential libphonenumber-dev libicu-dev
-```
-
-For **Ubuntu 16.04**:
-
-```
-$ sudo apt install cmake build-essential libphonenumber-dev libgeocoding-dev libicu-dev
-```
-
-Other platforms:
-
-To build `pn` you need a C++ compiler, [CMake](https://cmake.org/), Google's
-[libphonenumber](https://github.com/googlei18n/libphonenumber) (including the
-geocoding part) binaries and dev headers, [ICU](http://site.icu-project.org/)
-binaries and dev headers.
-
-## Build
-```
-$ cd build
-$ cmake ..
-$ make
-```
-## Install
-
-```
-$ sudo make install
-```
+This repository also contains a GNU AWK extension library, exposing some libphonenumber features in AWK. See [gawkext/README.md](gawkext/README.md) for more details.
 
 # Features
 
@@ -102,3 +69,42 @@ valid short number: true
 emergency number: true
 ```
 
+
+# How to build `pn`?
+
+## Prerequisites
+
+For **Debian (>= 9)**, **Ubuntu (>= 16.10)**:
+
+```
+$ sudo apt install cmake build-essential libphonenumber-dev libicu-dev
+```
+
+For **Ubuntu 16.04**:
+
+```
+$ sudo apt install cmake build-essential libphonenumber-dev libgeocoding-dev libicu-dev
+```
+
+**Note:** You might want to use a newer version of **libphonenumber** than the one packaged by your distribution. In that case, fetch the source code and compile it on your own, following the instructions provided [here](https://github.com/google/libphonenumber/blob/master/cpp/README#L132).
+
+**Other platforms:**
+
+To build `pn` you need a C++ compiler, [CMake](https://cmake.org/), Google's
+[libphonenumber](https://github.com/googlei18n/libphonenumber) (including the
+geocoding part) binaries and dev headers, [ICU](http://site.icu-project.org/)
+binaries and dev headers.
+
+## Build
+
+Provided that the prerequisites are met, to build `pn` and the gawk extension `gawkpn.so` (it is only compiled if CMake was able to locaite gawk's .h header on the system) simply issue :
+```
+pn/$ cd build
+pn/build/$ cmake ..
+pn/build/$ make
+```
+## Install
+
+```
+pn/build/$ sudo make install
+```
