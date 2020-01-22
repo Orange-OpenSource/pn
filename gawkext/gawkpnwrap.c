@@ -33,11 +33,17 @@
 
 int plugin_is_GPL_compatible;
 
-static gawk_api_t *api;
+static const gawk_api_t *api;
 static awk_ext_id_t ext_id;
 static const char *ext_version = NULL;
 
-awk_value_t *do_pn_set_country(int num_actual_args, awk_value_t *result) {
+#if gawk_api_major_version < 2
+#	define EXTFN_ARGS int num_actual_args, awk_value_t *result
+#else /* gawk_api_major_version >= 2 */
+#	define EXTFN_ARGS int num_actual_args, awk_value_t *result, struct awk_ext_func *finfo
+#endif
+
+awk_value_t *do_pn_set_country(EXTFN_ARGS) {
 	awk_value_t arg1;
 
 	if (get_argument(0, AWK_STRING, &arg1)) {
@@ -47,7 +53,7 @@ awk_value_t *do_pn_set_country(int num_actual_args, awk_value_t *result) {
 	return result;
 }
 
-awk_value_t *do_pn_set_format(int num_actual_args, awk_value_t *result) {
+awk_value_t *do_pn_set_format(EXTFN_ARGS) {
 	awk_value_t arg1;
 
 	if (get_argument(0, AWK_STRING, &arg1)) {
@@ -57,7 +63,7 @@ awk_value_t *do_pn_set_format(int num_actual_args, awk_value_t *result) {
 	return result;
 }
 
-awk_value_t *do_pn_set_leniency(int num_actual_args, awk_value_t *result) {
+awk_value_t *do_pn_set_leniency(EXTFN_ARGS) {
 	awk_value_t arg1;
 
 	if (get_argument(0, AWK_STRING, &arg1)) {
@@ -67,7 +73,7 @@ awk_value_t *do_pn_set_leniency(int num_actual_args, awk_value_t *result) {
 	return result;
 }
 
-awk_value_t *do_pn_format(int num_actual_args, awk_value_t *result) {
+awk_value_t *do_pn_format(EXTFN_ARGS) {
 	awk_value_t arg1;
 
 	char *res;
@@ -85,7 +91,7 @@ awk_value_t *do_pn_format(int num_actual_args, awk_value_t *result) {
 	return result;
 }
 
-awk_value_t *do_pn_valid(int num_actual_args, awk_value_t *result) {
+awk_value_t *do_pn_valid(EXTFN_ARGS) {
 	awk_value_t arg1;
 
 	int res;
@@ -101,7 +107,7 @@ awk_value_t *do_pn_valid(int num_actual_args, awk_value_t *result) {
 	return result;
 }
 
-awk_value_t *do_pn_find(int num_actual_args, awk_value_t *result) {
+awk_value_t *do_pn_find(EXTFN_ARGS) {
 	awk_value_t arg1, arg2;
 	struct str_list *pnl, *tmp;
 	awk_value_t index, value;
@@ -125,7 +131,7 @@ awk_value_t *do_pn_find(int num_actual_args, awk_value_t *result) {
 	return result;
 }
 
-awk_value_t *do_pn_info(int num_actual_args, awk_value_t *result) {
+awk_value_t *do_pn_info(EXTFN_ARGS) {
 	awk_value_t arg1, arg2;
 	awk_value_t index, value;
 
