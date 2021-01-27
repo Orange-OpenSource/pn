@@ -316,6 +316,51 @@ int valid(int argc, char *argv[])
 	return 0;
 }
 
+int dialout(int argc, char *argv[])
+{
+	int c, ret;
+	bool verbose = false;
+	string msg;
+	while ((c = getopt(argc, argv, "c:v")) != -1) {
+		switch((char)c) {
+		case 'c':
+			country_code = optarg;
+			break;
+		case 'v':
+			verbose = true;
+			break;
+		default:
+			return 1;
+			break;
+		}
+	}
+
+	if (optind == argc) {
+		cerr << "missing the phone number as argument" << endl;
+		return 1;
+	}
+
+	PhoneNumberUtil *pnu = PhoneNumberUtil::GetInstance();
+	PhoneNumber pn;
+	const string raw_num = argv[optind];
+
+	if (pnu->Parse(raw_num, "ZZ", &pn) != PhoneNumberUtil::NO_PARSING_ERROR) {
+		cerr << "invalid input number " << raw_num << " (must a valid number in e164 format, e.g. +124567890)" << endl;
+		return 1;
+	}
+
+	string result;
+
+	pnu->FormatOutOfCountryCallingNumber(pn, country_code, &result);
+
+	if (result == "") {
+		cerr << "couldn't determine the dial out sequence for " << raw_num << endl;
+	}
+
+	cout << result << endl;
+	return 0;
+}
+
 int main(int argc, char *argv[])
 {
 	if (argc < 3) {
@@ -331,6 +376,8 @@ int main(int argc, char *argv[])
 		return info(argc - 1, &argv[1]);
 	} else if (strcmp(argv[1], "valid") == 0) {
 		return valid(argc - 1, &argv[1]);
+	} else if (strcmp(argv[1], "dialout") == 0) {
+		return dialout(argc - 1, &argv[1]);
 	} else if (strcmp(argv[1], "-h") == 0) {
 		//usage();
 	} else {
