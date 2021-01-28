@@ -114,6 +114,14 @@ Gets informations about the given **NUMBER**, and returns them in the given
 Finds phone numbers in the given **TEXT**, and returns the numbers that were
 found as **keys** of the given **ARRAY**.
 
+### `pn_dialout(E164NUMBER, [COUNTRY-CODE])`
+
+Formats the given **E164NUMBER** phone number (e164 format) and returns the
+dialing string for out-of-country dialing purposes. If **COUNTRY-CODE** is
+provided, it will specify the origin country for out-of-country dialing,
+otherwise the country given in the last call to `pn_set_country(COUNTRY-CODE)`
+will be used.
+
 ## Building
 
 If GNU Awk is installed on your system and its extension development header was

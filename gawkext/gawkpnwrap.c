@@ -181,11 +181,34 @@ awk_value_t *do_pn_info(EXTFN_ARGS) {
 	return result;
 }
 
+awk_value_t *do_pn_dialout(EXTFN_ARGS) {
+	awk_value_t arg1, arg2;
+
+	char *res;
+	size_t res_len;
+
+
+	if (get_argument(0, AWK_STRING, &arg1))	{
+		if (get_argument(1, AWK_STRING, &arg2)) {
+			pn_dialout(arg1.u.s.str, arg1.u.s.len, arg2.u.s.str, arg2.u.s.len, &res, &res_len);
+		} else {
+			pn_dialout(arg1.u.s.str, arg1.u.s.len, NULL, 0, &res, &res_len);
+		}
+		make_const_string(res, res_len, result);
+		free(res);
+	} else {
+		make_null_string(result);
+	}
+
+	return result;
+}
+
 static awk_ext_func_t func_table[] = {
     { "pn_format", do_pn_format, 1 },
 	{ "pn_valid", do_pn_valid, 1 },
 	{ "pn_find", do_pn_find, 2 },
 	{ "pn_info", do_pn_info, 2 },
+	{ "pn_dialout", do_pn_dialout, 2 },
 	{ "pn_set_country", do_pn_set_country, 1 },
 	{ "pn_set_format", do_pn_set_format, 1 },
 	{ "pn_set_leniency", do_pn_set_leniency, 1 },

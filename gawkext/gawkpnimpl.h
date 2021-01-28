@@ -75,6 +75,8 @@ int set_leniency(char *str, size_t len);
 
 void set_country(char *str, size_t len);
 
+void pn_dialout(char *num, size_t num_len, char *country_code, size_t cc_len, char **res, size_t *res_len);
+
 #ifdef __cplusplus
 }
 #endif

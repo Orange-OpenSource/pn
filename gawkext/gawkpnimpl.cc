@@ -233,3 +233,23 @@ extern "C" int pn_info(char *num, size_t num_len, struct pn_info* res) {
 
 	return 1;
 }
+
+extern "C" void pn_dialout(char *num, size_t num_len, char *cc, size_t cc_len, char **res, size_t *res_len) {
+	std::string snum, sres;
+	PhoneNumber pn;
+
+	*res = NULL;
+	*res_len = 0;
+	snum.assign(num, num_len);
+
+	if (pnu->Parse(snum, "ZZ", &pn) == PhoneNumberUtil::NO_PARSING_ERROR) {
+		if (cc) {
+			string ccs(cc, cc_len);
+			pnu->FormatOutOfCountryCallingNumber(pn, cc, &sres);
+		} else {
+			pnu->FormatOutOfCountryCallingNumber(pn, country_code, &sres);
+		}
+		*res = strdup(sres.c_str());
+		*res_len = sres.length();
+	}
+}
