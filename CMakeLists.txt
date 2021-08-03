@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project("pn")
+project("pn" VERSION 0.9.0)
 
 include(CheckIncludeFiles)
 
@@ -34,6 +34,8 @@ check_include_files(
 	"stdio.h;errno.h;stdio.h;stddef.h;string.h;stdlib.h;sys/types.h;sys/stat.h;gawkapi.h"
 	HAVE_GAWK_H
 )
+
+add_compile_definitions(VERSION=\"${PROJECT_VERSION}\")
 
 if(${LIBPHONENUMBER-NOTFOUND})
 	message(FATAL_ERROR "could not find prerequisite: libphonenumber")

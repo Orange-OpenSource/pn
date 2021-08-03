@@ -30,6 +30,10 @@
 #include <phonenumbers/phonemetadata.pb.h>
 #include <phonenumbers/geocoding/phonenumber_offline_geocoder.h>
 
+#ifndef VERSION
+#	define VERSION "undefined"
+#endif
+
 using namespace std;
 using namespace i18n::phonenumbers;
 
@@ -396,6 +400,7 @@ static size_t ncommands = sizeof (commands) / sizeof (*commands);
 
 void usage(char *cmd) {
 	cout << BOLD("DESCRIPTION") ": phone numbers parsing, formating and validation" << endl;
+	cout << BOLD("VERSION") ": " VERSION << endl;
 	cout << BOLD("USAGE") ": " << cmd << " COMMAND PARAMETERS..." << endl;
 	cout << endl;
 
