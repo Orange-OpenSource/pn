@@ -20,6 +20,8 @@
 #include <iostream>
 #include <getopt.h>
 #include <string.h>
+#include <stdio.h>
+#include <search.h>
 #include <limits>
 #include <phonenumbers/phonenumbermatcher.h>
 #include <phonenumbers/phonenumberutil.h>
@@ -34,7 +36,7 @@ using namespace i18n::phonenumbers;
 string country_code = "ZZ";
 enum PhoneNumberUtil::PhoneNumberFormat number_format = PhoneNumberUtil::E164;
 enum PhoneNumberMatcher::Leniency matcher_leniency = PhoneNumberMatcher::VALID;
-
+void usage(char *cmd);
 
 bool parse_format(char *s, enum PhoneNumberUtil::PhoneNumberFormat *f)
 {
@@ -361,27 +363,71 @@ int dialout(int argc, char *argv[])
 	return 0;
 }
 
+int help(int argc, char *argv[]) {
+	usage(argv[-1]);
+	return 0;
+}
+
+#define FMT_BOLD_S "\033[1m%s\033[0m"
+
+#define BOLD(s) "\033[1m" s "\033[0m"
+
+struct command {
+	const char name[16];
+	int (*function)(int, char **);
+	const char *usage;
+	const char *description;
+} commands[] = {
+	{"valid", valid, "[-c INPUT_COUNTRY_CODE] [-l LENIENCY] [-v] NUMBER",
+		"tests whether the phone NUMBER is a valid number"},
+	{"info", info, "[-c INPUT_COUNTRY_CODE] NUMBER",
+		"displays informations about the phone NUMBER"},
+	{"format", format, "[-c INPUT_COUNTRY_CODE] [-f OUTPUT_FORMAT] NUMBER",
+		"formats a telephone NUMBER to the specified standard (E164 by default)"},
+	{"find", find, "[-c INPUT_COUNTRY_CODE] [-f OUTPUT_FORMAT] [-l LENIENCY] TEXT",
+		"finds phone number in some given TEXT, outputs one line on stdout per number found"},
+	{"dialout", dialout, "[-c DESTINATION_COUNTRY_CODE] [-l LENIENCY] NUMBER",
+		"formats a phone NUMBER (in e164 format) for out-of-country dialing"},
+	{"help", help, "",
+		"displays this help"},
+};
+
+static size_t ncommands = sizeof (commands) / sizeof (*commands);
+
+void usage(char *cmd) {
+	cout << BOLD("DESCRIPTION") ": phone numbers parsing, formating and validation" << endl;
+	cout << BOLD("USAGE") ": " << cmd << " COMMAND PARAMETERS..." << endl;
+	cout << endl;
+
+	cout << BOLD("COMMANDS:") << endl;
+	for (int i = 0 ; i < ncommands ; i++) {
+		struct command &c = commands[i];
+		printf("    " FMT_BOLD_S ": %s\n", c.name, c.description);
+		printf("      %s %s %s\n\n", cmd, c.name, c.usage);
+	}
+
+	cout << BOLD("OPTIONS") ":" << endl;
+	cout << "    " BOLD("LENIENCY") << endl;
+	cout << "      parser's leniency: 'possible', 'valid' (default), 'strict' or 'exact'" << endl;
+	cout << "    " BOLD("*_COUNTRY_CODE") << endl;
+	cout << "      2 uppercase letters country code (e.g. 'FR', 'US', ...)" << endl;
+	cout << "    " BOLD("FORMAT") << endl;
+	cout << "      phone number output format: 'e164' (default), 'int', 'nat' or 'teluri'" << endl;
+}
+
 int main(int argc, char *argv[])
 {
-	if (argc < 3) {
-		// TODO usage
+	if (argc == 1) {
+		usage(*argv);
 		return 1;
 	}
 
-	if (strcmp(argv[1], "format") == 0) {
-		return format(argc - 1, &argv[1]);
-	} else if (strcmp(argv[1], "find") == 0) {
-		return find(argc - 1, &argv[1]);
-	} else if (strcmp(argv[1], "info") == 0) {
-		return info(argc - 1, &argv[1]);
-	} else if (strcmp(argv[1], "valid") == 0) {
-		return valid(argc - 1, &argv[1]);
-	} else if (strcmp(argv[1], "dialout") == 0) {
-		return dialout(argc - 1, &argv[1]);
-	} else if (strcmp(argv[1], "-h") == 0) {
-		//usage();
+	struct command *c = (struct command *)lfind(argv[1], commands, &ncommands, sizeof (*commands), (int (*) (const void *, const void *)) strcmp);
+
+	if (c) {
+		return c->function(argc - 1, &argv[1]);
 	} else {
-		cerr << "invalid command: " << argv[1] << endl;
+		cerr << "invalid command: " << argv[1] << ", see '" << *argv << " help'" << endl;
 		return 1;
 	}
 }
