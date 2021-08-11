@@ -1,0 +1,22 @@
+Source: pn
+Section: misc
+Priority: optional
+Maintainer: Camille Oudot <camille.oudot@orange.com>
+Build-Depends: debhelper (>= 11~), gawk, cmake, libphonenumber-dev, libicu-dev
+Standards-Version: 4.1.4
+Homepage: https://github.com/Orange-OpenSource/pn
+
+Package: pn
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: command-line tool for phone number manipulation
+ pn can validate, search and format phone numbers using libphonenumber's
+ functions
+
+Package: pn-gawk
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, gawk
+Description: libphonenumber bindings for GNU Awk
+ GNU Awk extension that alllows to validate, search and format phone numbers
+ using libphonenumber's functions
+

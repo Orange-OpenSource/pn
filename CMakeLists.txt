@@ -6,28 +6,24 @@ include(CheckIncludeFiles)
 find_library(
 	LIBPHONENUMBER
 	phonenumber
-	PATHS
-	/usr/local/lib
+	PATHS ENV EXTRA_LIB_PATH
 )
 
 find_library(
 	LIBGEOCODING
 	geocoding
-	PATHS
-	/usr/local/lib
+	PATHS ENV EXTRA_LIB_PATH
 )
 
 find_library(
 	LIBICUUC
 	icuuc
-	PATHS
-	/usr/local/lib
+	PATHS ENV EXTRA_LIB_PATH
 )
 
 include_directories(
 	BEFORE
-	SYSTEM
-	/usr/local/include
+	SYSTEM ${EXTRA_INCLUDE_PATH}
 )
 
 check_include_files(
@@ -68,7 +64,7 @@ install(
 
 install(
 	FILES pn.1
-	DESTINATION ${CMAKE_INSTALL_PREFIX}/man/man1
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man1
 )
 
 if( HAVE_GAWK_H )
