@@ -68,7 +68,7 @@ install(
 
 install(
 	FILES pn.1
-	DESTINATION ${CMAKE_INSTALL_PREFIX}/man/man1
+	DESTINATION share/man/man1
 )
 
 if( HAVE_GAWK_H )
